@@ -1,6 +1,7 @@
 query cards($where: CardFilter, $limit: Int, $skip: Int) {
   cardCollection(where: $where, limit: $limit, skip: $skip) {
     items {
+      slug
       modulesCollection {
         items {
           __typename

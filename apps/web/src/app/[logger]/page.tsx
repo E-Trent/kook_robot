@@ -10,6 +10,9 @@ const Page = (props: {
   params: { logger: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) => {
+  useEffect(() => {
+    fetch("https://kook-web.vercel.app/api/webhook", { method: "post" });
+  }, []);
   const path = props.params.logger;
   const [ready, setReady] = useState(false);
   const [current, setCurrent] = useState<LoggerItem[]>([]);
@@ -30,9 +33,12 @@ const Page = (props: {
     setPrefix(data.prefix);
     setAppend(data.append);
     backup.current = current;
+    if (data.append.length === 0 && data.prefix.length === 0) {
+      setOldGroup(backup.current.map((i) => i.id));
+    }
   }, [current, path, ready]);
   useEffect(() => {
-    if (append.length === 0) {
+    if (append.length === 0 && prefix.length === 0) {
       let timer = setTimeout(() => {
         setOldGroup(backup.current.map((i) => i.id));
       }, DELAY);
@@ -40,7 +46,7 @@ const Page = (props: {
         timer && clearTimeout(timer);
       };
     }
-  }, [append.length]);
+  }, [append.length, prefix.length]);
   useEffect(() => {
     if (append.length && !hasPrefix) {
       let timer = setTimeout(() => {
@@ -61,7 +67,7 @@ const Page = (props: {
         setHasPrefix(false);
       };
     }
-  }, [current, prefix]);
+  }, [append.length, current, prefix]);
   useEffect(() => {
     setReady(true);
   }, []);

@@ -9,6 +9,10 @@ export interface Lang {
       notFound: string;
       disabled: string;
     };
+    role: {
+      cmd: string;
+      notFound: string;
+    };
   };
   base: {
     help: string;

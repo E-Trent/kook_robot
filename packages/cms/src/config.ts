@@ -1,6 +1,5 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 import { env, url } from "./env";
-import * as fs from "fs";
 const option = {
   headers: {
     Authorization: `Bearer ${env.CONTENTFUL_TOKEN}`,

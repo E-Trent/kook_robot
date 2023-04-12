@@ -17,6 +17,24 @@ type Query {
     where: SectionModuleFilter
     order: [SectionModuleOrder]
   ): SectionModuleCollection
+  paragraphField(id: String!, preview: Boolean, locale: String): ParagraphField
+  paragraphFieldCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+    where: ParagraphFieldFilter
+    order: [ParagraphFieldOrder]
+  ): ParagraphFieldCollection
+  headerModule(id: String!, preview: Boolean, locale: String): HeaderModule
+  headerModuleCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+    where: HeaderModuleFilter
+    order: [HeaderModuleOrder]
+  ): HeaderModuleCollection
   sectionModuleImageAccessory(
     id: String!
     preview: Boolean
@@ -39,15 +57,6 @@ type Query {
     where: CardFilter
     order: [CardOrder]
   ): CardCollection
-  headerModule(id: String!, preview: Boolean, locale: String): HeaderModule
-  headerModuleCollection(
-    skip: Int = 0
-    limit: Int = 100
-    preview: Boolean
-    locale: String
-    where: HeaderModuleFilter
-    order: [HeaderModuleOrder]
-  ): HeaderModuleCollection
   entryCollection(
     skip: Int = 0
     limit: Int = 100
@@ -58,9 +67,7 @@ type Query {
   ): EntryCollection
 }
 
-"""
-Represents a binary file in a space. An asset can be any file type.
-"""
+# Represents a binary file in a space. An asset can be any file type.
 type Asset {
   sys: Sys!
   contentfulMetadata: ContentfulMetadata!
@@ -84,207 +91,137 @@ type Sys {
   publishedVersion: Int
 }
 
-"""
-A date-time string at UTC, such as 2007-12-03T10:15:30Z,
-    compliant with the 'date-time' format outlined in section 5.6 of
-    the RFC 3339 profile of the ISO 8601 standard for representation
-    of dates and times using the Gregorian calendar.
-"""
+# A date-time string at UTC, such as 2007-12-03T10:15:30Z,
+#     compliant with the 'date-time' format outlined in section 5.6 of
+#     the RFC 3339 profile of the ISO 8601 standard for representation
+#     of dates and times using the Gregorian calendar.
 scalar DateTime
 
 type ContentfulMetadata {
   tags: [ContentfulTag]!
 }
 
-"""
-Represents a tag entity for finding and organizing content easily.
-    Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
-"""
+# Represents a tag entity for finding and organizing content easily.
+#     Find out more here: https://www.contentful.com/developers/docs/references/content-delivery-api/#/reference/content-tags
 type ContentfulTag {
   id: String
   name: String
 }
 
 input ImageTransformOptions {
-  """
-  Desired width in pixels. Defaults to the original image width.
-  """
+  # Desired width in pixels. Defaults to the original image width.
   width: Dimension
 
-  """
-  Desired height in pixels. Defaults to the original image height.
-  """
+  # Desired height in pixels. Defaults to the original image height.
   height: Dimension
 
-  """
-  Desired quality of the image in percents.
-          Used for `PNG8`, `JPG`, `JPG_PROGRESSIVE` and `WEBP` formats.
-  """
+  # Desired quality of the image in percents.
+  #         Used for `PNG8`, `JPG`, `JPG_PROGRESSIVE` and `WEBP` formats.
   quality: Quality
 
-  """
-  Desired corner radius in pixels.
-          Results in an image with rounded corners (pass `-1` for a full circle/ellipse).
-          Defaults to `0`. Uses desired background color as padding color,
-          unless the format is `JPG` or `JPG_PROGRESSIVE` and resize strategy is `PAD`, then defaults to white.
-  """
+  # Desired corner radius in pixels.
+  #         Results in an image with rounded corners (pass `-1` for a full circle/ellipse).
+  #         Defaults to `0`. Uses desired background color as padding color,
+  #         unless the format is `JPG` or `JPG_PROGRESSIVE` and resize strategy is `PAD`, then defaults to white.
   cornerRadius: Int
 
-  """
-  Desired resize strategy. Defaults to `FIT`.
-  """
+  # Desired resize strategy. Defaults to `FIT`.
   resizeStrategy: ImageResizeStrategy
 
-  """
-  Desired resize focus area. Defaults to `CENTER`.
-  """
+  # Desired resize focus area. Defaults to `CENTER`.
   resizeFocus: ImageResizeFocus
 
-  """
-  Desired background color, used with corner radius or `PAD` resize strategy.
-          Defaults to transparent (for `PNG`, `PNG8` and `WEBP`) or white (for `JPG` and `JPG_PROGRESSIVE`).
-  """
+  # Desired background color, used with corner radius or `PAD` resize strategy.
+  #         Defaults to transparent (for `PNG`, `PNG8` and `WEBP`) or white (for `JPG` and `JPG_PROGRESSIVE`).
   backgroundColor: HexColor
 
-  """
-  Desired image format. Defaults to the original image format.
-  """
+  # Desired image format. Defaults to the original image format.
   format: ImageFormat
 }
 
-"""
-The 'Dimension' type represents dimensions as whole numeric values between `1` and `4000`.
-"""
+# The 'Dimension' type represents dimensions as whole numeric values between `1` and `4000`.
 scalar Dimension
 
-"""
-The 'Quality' type represents quality as whole numeric values between `1` and `100`.
-"""
+# The 'Quality' type represents quality as whole numeric values between `1` and `100`.
 scalar Quality
 
 enum ImageResizeStrategy {
-  """
-  Resizes the image to fit into the specified dimensions.
-  """
+  # Resizes the image to fit into the specified dimensions.
   FIT
 
-  """
-  Resizes the image to the specified dimensions, padding the image if needed.
-          Uses desired background color as padding color.
-  """
+  # Resizes the image to the specified dimensions, padding the image if needed.
+  #         Uses desired background color as padding color.
   PAD
 
-  """
-  Resizes the image to the specified dimensions, cropping the image if needed.
-  """
+  # Resizes the image to the specified dimensions, cropping the image if needed.
   FILL
 
-  """
-  Resizes the image to the specified dimensions, changing the original aspect ratio if needed.
-  """
+  # Resizes the image to the specified dimensions, changing the original aspect ratio if needed.
   SCALE
 
-  """
-  Crops a part of the original image to fit into the specified dimensions.
-  """
+  # Crops a part of the original image to fit into the specified dimensions.
   CROP
 
-  """
-  Creates a thumbnail from the image.
-  """
+  # Creates a thumbnail from the image.
   THUMB
 }
 
 enum ImageResizeFocus {
-  """
-  Focus the resizing on the center.
-  """
+  # Focus the resizing on the center.
   CENTER
 
-  """
-  Focus the resizing on the top.
-  """
+  # Focus the resizing on the top.
   TOP
 
-  """
-  Focus the resizing on the top right.
-  """
+  # Focus the resizing on the top right.
   TOP_RIGHT
 
-  """
-  Focus the resizing on the right.
-  """
+  # Focus the resizing on the right.
   RIGHT
 
-  """
-  Focus the resizing on the bottom right.
-  """
+  # Focus the resizing on the bottom right.
   BOTTOM_RIGHT
 
-  """
-  Focus the resizing on the bottom.
-  """
+  # Focus the resizing on the bottom.
   BOTTOM
 
-  """
-  Focus the resizing on the bottom left.
-  """
+  # Focus the resizing on the bottom left.
   BOTTOM_LEFT
 
-  """
-  Focus the resizing on the left.
-  """
+  # Focus the resizing on the left.
   LEFT
 
-  """
-  Focus the resizing on the top left.
-  """
+  # Focus the resizing on the top left.
   TOP_LEFT
 
-  """
-  Focus the resizing on the largest face.
-  """
+  # Focus the resizing on the largest face.
   FACE
 
-  """
-  Focus the resizing on the area containing all the faces.
-  """
+  # Focus the resizing on the area containing all the faces.
   FACES
 }
 
-"""
-The 'HexColor' type represents color in `rgb:ffffff` string format.
-"""
+# The 'HexColor' type represents color in `rgb:ffffff` string format.
 scalar HexColor
 
 enum ImageFormat {
-  """
-  JPG image format.
-  """
+  # JPG image format.
   JPG
 
-  """
-  Progressive JPG format stores multiple passes of an image in progressively higher detail.
-          When a progressive image is loading, the viewer will first see a lower quality pixelated version which
-          will gradually improve in detail, until the image is fully downloaded. This is to display an image as
-          early as possible to make the layout look as designed.
-  """
+  # Progressive JPG format stores multiple passes of an image in progressively higher detail.
+  #         When a progressive image is loading, the viewer will first see a lower quality pixelated version which
+  #         will gradually improve in detail, until the image is fully downloaded. This is to display an image as
+  #         early as possible to make the layout look as designed.
   JPG_PROGRESSIVE
 
-  """
-  PNG image format
-  """
+  # PNG image format
   PNG
 
-  """
-  8-bit PNG images support up to 256 colors and weigh less than the standard 24-bit PNG equivalent.
-          The 8-bit PNG format is mostly used for simple images, such as icons or logos.
-  """
+  # 8-bit PNG images support up to 256 colors and weigh less than the standard 24-bit PNG equivalent.
+  #         The 8-bit PNG format is mostly used for simple images, such as icons or logos.
   PNG8
 
-  """
-  WebP image format.
-  """
+  # WebP image format.
   WEBP
   AVIF
 }
@@ -323,9 +260,7 @@ type SectionModuleImageAccessoryCollection {
   items: [SectionModuleImageAccessory]!
 }
 
-"""
-[See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/sectionModuleImageAccessory)
-"""
+# [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/sectionModuleImageAccessory)
 type SectionModuleImageAccessory implements Entry {
   sys: Sys!
   contentfulMetadata: ContentfulMetadata!
@@ -359,20 +294,25 @@ type SectionModuleCollection {
   items: [SectionModule]!
 }
 
-"""
-[See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/sectionModule)
-"""
+# [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/sectionModule)
 type SectionModule implements Entry {
   sys: Sys!
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): SectionModuleLinkingCollections
   name(locale: String): String
-  content(locale: String): String
+  slug(locale: String): String
   type(locale: String): String
+  content(locale: String): String
   emoji(locale: String): Boolean
   mode(locale: String): String
   accessory(preview: Boolean, locale: String): SectionModuleImageAccessory
   divider(locale: String): String
+  paragraphFieldsCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+  ): SectionModuleParagraphFieldsCollection
 }
 
 type SectionModuleLinkingCollections {
@@ -397,9 +337,7 @@ type CardCollection {
   items: [Card]!
 }
 
-"""
-[See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/card)
-"""
+# [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/card)
 type Card implements Entry {
   sys: Sys!
   contentfulMetadata: ContentfulMetadata!
@@ -434,14 +372,13 @@ type CardModulesCollection {
 
 union CardModulesItem = HeaderModule | SectionModule
 
-"""
-[See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/headerModule)
-"""
+# [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/headerModule)
 type HeaderModule implements Entry {
   sys: Sys!
   contentfulMetadata: ContentfulMetadata!
   linkedFrom(allowedLocales: [String]): HeaderModuleLinkingCollections
   name(locale: String): String
+  slug(locale: String): String
   content(locale: String): String
   emoji(locale: String): Boolean
   divider(locale: String): String
@@ -460,6 +397,37 @@ type HeaderModuleLinkingCollections {
     preview: Boolean
     locale: String
   ): CardCollection
+}
+
+type SectionModuleParagraphFieldsCollection {
+  total: Int!
+  skip: Int!
+  limit: Int!
+  items: [ParagraphField]!
+}
+
+# [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/paragraphField)
+type ParagraphField implements Entry {
+  sys: Sys!
+  contentfulMetadata: ContentfulMetadata!
+  linkedFrom(allowedLocales: [String]): ParagraphFieldLinkingCollections
+  content(locale: String): String
+  type(locale: String): String
+}
+
+type ParagraphFieldLinkingCollections {
+  entryCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+  ): EntryCollection
+  sectionModuleCollection(
+    skip: Int = 0
+    limit: Int = 100
+    preview: Boolean
+    locale: String
+  ): SectionModuleCollection
 }
 
 type AssetCollection {
@@ -620,13 +588,13 @@ input SectionModuleFilter {
   name_not_in: [String]
   name_contains: String
   name_not_contains: String
-  content_exists: Boolean
-  content: String
-  content_not: String
-  content_in: [String]
-  content_not_in: [String]
-  content_contains: String
-  content_not_contains: String
+  slug_exists: Boolean
+  slug: String
+  slug_not: String
+  slug_in: [String]
+  slug_not_in: [String]
+  slug_contains: String
+  slug_not_contains: String
   type_exists: Boolean
   type: String
   type_not: String
@@ -634,6 +602,13 @@ input SectionModuleFilter {
   type_not_in: [String]
   type_contains: String
   type_not_contains: String
+  content_exists: Boolean
+  content: String
+  content_not: String
+  content_in: [String]
+  content_not_in: [String]
+  content_contains: String
+  content_not_contains: String
   emoji_exists: Boolean
   emoji: Boolean
   emoji_not: Boolean
@@ -652,6 +627,7 @@ input SectionModuleFilter {
   divider_not_in: [String]
   divider_contains: String
   divider_not_contains: String
+  paragraphFieldsCollection_exists: Boolean
   OR: [SectionModuleFilter]
   AND: [SectionModuleFilter]
 }
@@ -681,12 +657,121 @@ input cfSectionModuleImageAccessoryNestedFilter {
 enum SectionModuleOrder {
   name_ASC
   name_DESC
+  slug_ASC
+  slug_DESC
   type_ASC
   type_DESC
   emoji_ASC
   emoji_DESC
   mode_ASC
   mode_DESC
+  divider_ASC
+  divider_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type ParagraphFieldCollection {
+  total: Int!
+  skip: Int!
+  limit: Int!
+  items: [ParagraphField]!
+}
+
+input ParagraphFieldFilter {
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  content_exists: Boolean
+  content: String
+  content_not: String
+  content_in: [String]
+  content_not_in: [String]
+  content_contains: String
+  content_not_contains: String
+  type_exists: Boolean
+  type: String
+  type_not: String
+  type_in: [String]
+  type_not_in: [String]
+  type_contains: String
+  type_not_contains: String
+  OR: [ParagraphFieldFilter]
+  AND: [ParagraphFieldFilter]
+}
+
+enum ParagraphFieldOrder {
+  content_ASC
+  content_DESC
+  type_ASC
+  type_DESC
+  sys_id_ASC
+  sys_id_DESC
+  sys_publishedAt_ASC
+  sys_publishedAt_DESC
+  sys_firstPublishedAt_ASC
+  sys_firstPublishedAt_DESC
+  sys_publishedVersion_ASC
+  sys_publishedVersion_DESC
+}
+
+type HeaderModuleCollection {
+  total: Int!
+  skip: Int!
+  limit: Int!
+  items: [HeaderModule]!
+}
+
+input HeaderModuleFilter {
+  sys: SysFilter
+  contentfulMetadata: ContentfulMetadataFilter
+  name_exists: Boolean
+  name: String
+  name_not: String
+  name_in: [String]
+  name_not_in: [String]
+  name_contains: String
+  name_not_contains: String
+  slug_exists: Boolean
+  slug: String
+  slug_not: String
+  slug_in: [String]
+  slug_not_in: [String]
+  slug_contains: String
+  slug_not_contains: String
+  content_exists: Boolean
+  content: String
+  content_not: String
+  content_in: [String]
+  content_not_in: [String]
+  content_contains: String
+  content_not_contains: String
+  emoji_exists: Boolean
+  emoji: Boolean
+  emoji_not: Boolean
+  divider_exists: Boolean
+  divider: String
+  divider_not: String
+  divider_in: [String]
+  divider_not_in: [String]
+  divider_contains: String
+  divider_not_contains: String
+  OR: [HeaderModuleFilter]
+  AND: [HeaderModuleFilter]
+}
+
+enum HeaderModuleOrder {
+  name_ASC
+  name_DESC
+  slug_ASC
+  slug_DESC
+  emoji_ASC
+  emoji_DESC
   divider_ASC
   divider_DESC
   sys_id_ASC
@@ -781,61 +866,6 @@ enum CardOrder {
   theme_DESC
   size_ASC
   size_DESC
-  sys_id_ASC
-  sys_id_DESC
-  sys_publishedAt_ASC
-  sys_publishedAt_DESC
-  sys_firstPublishedAt_ASC
-  sys_firstPublishedAt_DESC
-  sys_publishedVersion_ASC
-  sys_publishedVersion_DESC
-}
-
-type HeaderModuleCollection {
-  total: Int!
-  skip: Int!
-  limit: Int!
-  items: [HeaderModule]!
-}
-
-input HeaderModuleFilter {
-  sys: SysFilter
-  contentfulMetadata: ContentfulMetadataFilter
-  name_exists: Boolean
-  name: String
-  name_not: String
-  name_in: [String]
-  name_not_in: [String]
-  name_contains: String
-  name_not_contains: String
-  content_exists: Boolean
-  content: String
-  content_not: String
-  content_in: [String]
-  content_not_in: [String]
-  content_contains: String
-  content_not_contains: String
-  emoji_exists: Boolean
-  emoji: Boolean
-  emoji_not: Boolean
-  divider_exists: Boolean
-  divider: String
-  divider_not: String
-  divider_in: [String]
-  divider_not_in: [String]
-  divider_contains: String
-  divider_not_contains: String
-  OR: [HeaderModuleFilter]
-  AND: [HeaderModuleFilter]
-}
-
-enum HeaderModuleOrder {
-  name_ASC
-  name_DESC
-  emoji_ASC
-  emoji_DESC
-  divider_ASC
-  divider_DESC
   sys_id_ASC
   sys_id_DESC
   sys_publishedAt_ASC

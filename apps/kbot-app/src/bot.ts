@@ -4,7 +4,6 @@ import { $t } from "i18n";
 import { logger } from "./logger";
 
 export const bot: KBotify = kbotInit();
-
 bot.message.on("text", async (msg) => {
   logger.pushMessage(msg);
   if (

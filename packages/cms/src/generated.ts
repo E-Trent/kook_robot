@@ -418,6 +418,7 @@ export type HeaderModule = Entry & {
   emoji?: Maybe<Scalars['Boolean']>;
   linkedFrom?: Maybe<HeaderModuleLinkingCollections>;
   name?: Maybe<Scalars['String']>;
+  slug?: Maybe<Scalars['String']>;
   sys: Sys;
 };
 
@@ -448,6 +449,12 @@ export type HeaderModuleLinkedFromArgs = {
 
 /** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/headerModule) */
 export type HeaderModuleNameArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/headerModule) */
+export type HeaderModuleSlugArgs = {
   locale?: InputMaybe<Scalars['String']>;
 };
 
@@ -487,6 +494,13 @@ export type HeaderModuleFilter = {
   name_not?: InputMaybe<Scalars['String']>;
   name_not_contains?: InputMaybe<Scalars['String']>;
   name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug?: InputMaybe<Scalars['String']>;
+  slug_contains?: InputMaybe<Scalars['String']>;
+  slug_exists?: InputMaybe<Scalars['Boolean']>;
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_not?: InputMaybe<Scalars['String']>;
+  slug_not_contains?: InputMaybe<Scalars['String']>;
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   sys?: InputMaybe<SysFilter>;
 };
 
@@ -519,6 +533,8 @@ export enum HeaderModuleOrder {
   EmojiDesc = 'emoji_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -624,6 +640,100 @@ export type ImageTransformOptions = {
   width?: InputMaybe<Scalars['Dimension']>;
 };
 
+/** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/paragraphField) */
+export type ParagraphField = Entry & {
+  __typename?: 'ParagraphField';
+  content?: Maybe<Scalars['String']>;
+  contentfulMetadata: ContentfulMetadata;
+  linkedFrom?: Maybe<ParagraphFieldLinkingCollections>;
+  sys: Sys;
+  type?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/paragraphField) */
+export type ParagraphFieldContentArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/paragraphField) */
+export type ParagraphFieldLinkedFromArgs = {
+  allowedLocales?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/paragraphField) */
+export type ParagraphFieldTypeArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+export type ParagraphFieldCollection = {
+  __typename?: 'ParagraphFieldCollection';
+  items: Array<Maybe<ParagraphField>>;
+  limit: Scalars['Int'];
+  skip: Scalars['Int'];
+  total: Scalars['Int'];
+};
+
+export type ParagraphFieldFilter = {
+  AND?: InputMaybe<Array<InputMaybe<ParagraphFieldFilter>>>;
+  OR?: InputMaybe<Array<InputMaybe<ParagraphFieldFilter>>>;
+  content?: InputMaybe<Scalars['String']>;
+  content_contains?: InputMaybe<Scalars['String']>;
+  content_exists?: InputMaybe<Scalars['Boolean']>;
+  content_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  content_not?: InputMaybe<Scalars['String']>;
+  content_not_contains?: InputMaybe<Scalars['String']>;
+  content_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  contentfulMetadata?: InputMaybe<ContentfulMetadataFilter>;
+  sys?: InputMaybe<SysFilter>;
+  type?: InputMaybe<Scalars['String']>;
+  type_contains?: InputMaybe<Scalars['String']>;
+  type_exists?: InputMaybe<Scalars['Boolean']>;
+  type_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  type_not?: InputMaybe<Scalars['String']>;
+  type_not_contains?: InputMaybe<Scalars['String']>;
+  type_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type ParagraphFieldLinkingCollections = {
+  __typename?: 'ParagraphFieldLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+  sectionModuleCollection?: Maybe<SectionModuleCollection>;
+};
+
+
+export type ParagraphFieldLinkingCollectionsEntryCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  locale?: InputMaybe<Scalars['String']>;
+  preview?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type ParagraphFieldLinkingCollectionsSectionModuleCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  locale?: InputMaybe<Scalars['String']>;
+  preview?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+export enum ParagraphFieldOrder {
+  ContentAsc = 'content_ASC',
+  ContentDesc = 'content_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC',
+  TypeAsc = 'type_ASC',
+  TypeDesc = 'type_DESC'
+}
+
 export type Query = {
   __typename?: 'Query';
   asset?: Maybe<Asset>;
@@ -633,6 +743,8 @@ export type Query = {
   entryCollection?: Maybe<EntryCollection>;
   headerModule?: Maybe<HeaderModule>;
   headerModuleCollection?: Maybe<HeaderModuleCollection>;
+  paragraphField?: Maybe<ParagraphField>;
+  paragraphFieldCollection?: Maybe<ParagraphFieldCollection>;
   sectionModule?: Maybe<SectionModule>;
   sectionModuleCollection?: Maybe<SectionModuleCollection>;
   sectionModuleImageAccessory?: Maybe<SectionModuleImageAccessory>;
@@ -701,6 +813,23 @@ export type QueryHeaderModuleCollectionArgs = {
 };
 
 
+export type QueryParagraphFieldArgs = {
+  id: Scalars['String'];
+  locale?: InputMaybe<Scalars['String']>;
+  preview?: InputMaybe<Scalars['Boolean']>;
+};
+
+
+export type QueryParagraphFieldCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  locale?: InputMaybe<Scalars['String']>;
+  order?: InputMaybe<Array<InputMaybe<ParagraphFieldOrder>>>;
+  preview?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  where?: InputMaybe<ParagraphFieldFilter>;
+};
+
+
 export type QuerySectionModuleArgs = {
   id: Scalars['String'];
   locale?: InputMaybe<Scalars['String']>;
@@ -745,6 +874,8 @@ export type SectionModule = Entry & {
   linkedFrom?: Maybe<SectionModuleLinkingCollections>;
   mode?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  paragraphFieldsCollection?: Maybe<SectionModuleParagraphFieldsCollection>;
+  slug?: Maybe<Scalars['String']>;
   sys: Sys;
   type?: Maybe<Scalars['String']>;
 };
@@ -789,6 +920,21 @@ export type SectionModuleModeArgs = {
 
 /** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/sectionModule) */
 export type SectionModuleNameArgs = {
+  locale?: InputMaybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/sectionModule) */
+export type SectionModuleParagraphFieldsCollectionArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  locale?: InputMaybe<Scalars['String']>;
+  preview?: InputMaybe<Scalars['Boolean']>;
+  skip?: InputMaybe<Scalars['Int']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/es3qsd4lkyld/content_types/sectionModule) */
+export type SectionModuleSlugArgs = {
   locale?: InputMaybe<Scalars['String']>;
 };
 
@@ -843,6 +989,14 @@ export type SectionModuleFilter = {
   name_not?: InputMaybe<Scalars['String']>;
   name_not_contains?: InputMaybe<Scalars['String']>;
   name_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  paragraphFieldsCollection_exists?: InputMaybe<Scalars['Boolean']>;
+  slug?: InputMaybe<Scalars['String']>;
+  slug_contains?: InputMaybe<Scalars['String']>;
+  slug_exists?: InputMaybe<Scalars['Boolean']>;
+  slug_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  slug_not?: InputMaybe<Scalars['String']>;
+  slug_not_contains?: InputMaybe<Scalars['String']>;
+  slug_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
   sys?: InputMaybe<SysFilter>;
   type?: InputMaybe<Scalars['String']>;
   type_contains?: InputMaybe<Scalars['String']>;
@@ -987,6 +1141,8 @@ export enum SectionModuleOrder {
   ModeDesc = 'mode_DESC',
   NameAsc = 'name_ASC',
   NameDesc = 'name_DESC',
+  SlugAsc = 'slug_ASC',
+  SlugDesc = 'slug_DESC',
   SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
   SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
   SysIdAsc = 'sys_id_ASC',
@@ -998,6 +1154,14 @@ export enum SectionModuleOrder {
   TypeAsc = 'type_ASC',
   TypeDesc = 'type_DESC'
 }
+
+export type SectionModuleParagraphFieldsCollection = {
+  __typename?: 'SectionModuleParagraphFieldsCollection';
+  items: Array<Maybe<ParagraphField>>;
+  limit: Scalars['Int'];
+  skip: Scalars['Int'];
+  total: Scalars['Int'];
+};
 
 export type Sys = {
   __typename?: 'Sys';
@@ -1075,21 +1239,31 @@ export type CardsQueryVariables = Exact<{
 }>;
 
 
-export type CardsQuery = { __typename?: 'Query', cardCollection?: { __typename?: 'CardCollection', items: Array<{ __typename?: 'Card', name?: string | null, theme?: string | null, size?: string | null, modulesCollection?: { __typename?: 'CardModulesCollection', items: Array<{ __typename: 'HeaderModule', content?: string | null, divider?: string | null, emoji?: boolean | null } | { __typename: 'SectionModule', type?: string | null, emoji?: boolean | null, mode?: string | null, divider?: string | null, content?: string | null, accessory?: { __typename?: 'SectionModuleImageAccessory', imageUrl?: string | null, size?: string | null, image?: { __typename?: 'Asset', url?: string | null } | null } | null } | null> } | null } | null> } | null };
+export type CardsQuery = { __typename?: 'Query', cardCollection?: { __typename?: 'CardCollection', items: Array<{ __typename?: 'Card', slug?: string | null, name?: string | null, theme?: string | null, size?: string | null, modulesCollection?: { __typename?: 'CardModulesCollection', items: Array<{ __typename: 'HeaderModule', slug?: string | null, content?: string | null, divider?: string | null, emoji?: boolean | null } | { __typename: 'SectionModule', slug?: string | null, type?: string | null, emoji?: boolean | null, mode?: string | null, divider?: string | null, content?: string | null, accessory?: { __typename?: 'SectionModuleImageAccessory', imageUrl?: string | null, size?: string | null, image?: { __typename?: 'Asset', url?: string | null } | null } | null, paragraphFieldsCollection?: { __typename?: 'SectionModuleParagraphFieldsCollection', items: Array<{ __typename?: 'ParagraphField', content?: string | null, type?: string | null } | null> } | null } | null> } | null } | null> } | null };
 
-export type HeaderModuleFragment = { __typename?: 'HeaderModule', content?: string | null, divider?: string | null, emoji?: boolean | null };
+export type HeaderModuleFragment = { __typename?: 'HeaderModule', slug?: string | null, content?: string | null, divider?: string | null, emoji?: boolean | null };
 
-export type SectionModuleFragment = { __typename?: 'SectionModule', type?: string | null, emoji?: boolean | null, mode?: string | null, divider?: string | null, content?: string | null, accessory?: { __typename?: 'SectionModuleImageAccessory', imageUrl?: string | null, size?: string | null, image?: { __typename?: 'Asset', url?: string | null } | null } | null };
+export type SectionModuleFragment = { __typename?: 'SectionModule', slug?: string | null, type?: string | null, emoji?: boolean | null, mode?: string | null, divider?: string | null, content?: string | null, accessory?: { __typename?: 'SectionModuleImageAccessory', imageUrl?: string | null, size?: string | null, image?: { __typename?: 'Asset', url?: string | null } | null } | null, paragraphFieldsCollection?: { __typename?: 'SectionModuleParagraphFieldsCollection', items: Array<{ __typename?: 'ParagraphField', content?: string | null, type?: string | null } | null> } | null };
+
+export type ParagraphFieldFragment = { __typename?: 'ParagraphField', content?: string | null, type?: string | null };
 
 export const HeaderModuleFragmentDoc = gql`
     fragment HeaderModule on HeaderModule {
+  slug
   content
   divider
   emoji
 }
     `;
+export const ParagraphFieldFragmentDoc = gql`
+    fragment ParagraphField on ParagraphField {
+  content
+  type
+}
+    `;
 export const SectionModuleFragmentDoc = gql`
     fragment SectionModule on SectionModule {
+  slug
   type
   emoji
   mode
@@ -1102,12 +1276,18 @@ export const SectionModuleFragmentDoc = gql`
   }
   divider
   content
+  paragraphFieldsCollection {
+    items {
+      ...ParagraphField
+    }
+  }
 }
-    `;
+    ${ParagraphFieldFragmentDoc}`;
 export const CardsDocument = gql`
     query cards($where: CardFilter, $limit: Int, $skip: Int) {
   cardCollection(where: $where, limit: $limit, skip: $skip) {
     items {
+      slug
       modulesCollection {
         items {
           __typename

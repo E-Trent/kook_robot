@@ -1,19 +1,31 @@
 fragment HeaderModule on HeaderModule{
-    content
-    divider
-    emoji
+  slug
+  content
+  divider
+  emoji
 }
 fragment SectionModule on SectionModule{
-    type
-    emoji
-    mode
-    accessory {
-        image {
-            url
-        }
-        imageUrl
-        size
+  slug
+  type
+  emoji
+  mode
+  accessory {
+    image {
+      url
     }
-    divider
-    content
+    imageUrl
+    size
+  }
+  divider
+  content
+  paragraphFieldsCollection{
+    items{
+      ...ParagraphField
+    }
+  }
+}
+
+fragment ParagraphField on ParagraphField {
+  content
+  type
 }

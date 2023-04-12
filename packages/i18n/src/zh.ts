@@ -11,6 +11,10 @@ const zh: Lang = {
       notFound: "未查询到维护内容",
       disabled: "别点了别点了",
     },
+    role: {
+      cmd: "查询",
+      notFound: "未查询到角色：{{role}}",
+    },
   },
   base: {
     help: "`@机器人 指令`获取机器人所有支持的指令",

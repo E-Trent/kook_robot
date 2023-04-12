@@ -1,11 +1,12 @@
-import { GmsrMenu } from "kbot";
+import { GmsrMenu, uploadImage } from "kbot";
 import { contentful } from "cms";
 import { Card } from "kbotify";
 import { CardObject, Theme } from "kbotify/dist/core/card";
-import { typedBoolean } from "helper";
-import { getMaintenance } from "crawler";
+import { replaceWithObj, typedBoolean } from "helper";
+import { getMaintenance, getRole } from "crawler";
 import { $t } from "i18n";
 import { env } from "../env";
+import { bot } from "../bot";
 
 export const gmsrMenu = new GmsrMenu({
   getCard: async (slug) => {
@@ -53,20 +54,15 @@ export const gmsrMenu = new GmsrMenu({
                   size: module.accessory?.size || "lg",
                 }
               : undefined;
-            module.content
-              ?.split("\n")
-              .filter(typedBoolean)
-              .forEach((content, index) => {
-                cardModule.push({
-                  func: "addText",
-                  params: [
-                    content || "",
-                    !!module.emoji,
-                    (module?.mode as "right" | "left") || "left",
-                    index === 0 && accessory,
-                  ],
-                });
-              });
+            cardModule.push({
+              func: "addText",
+              params: [
+                module.content || "",
+                !!module.emoji,
+                (module?.mode as "right" | "left") || "left",
+                accessory,
+              ],
+            });
             break;
           }
         }
@@ -143,6 +139,134 @@ export const gmsrMenu = new GmsrMenu({
         return fallback(returnVal.last);
         // card.addText($t("gmsr.maintenance.notFound"), false, "right", button);
       }
+    }
+    return card;
+  },
+  getRole: async (name: string) => {
+    const role = await getRole(name);
+    if (!role) return;
+    const cms = await contentful().fetchCard("gmsr-role-card");
+    if (!cms) return;
+    const card = new Card();
+    const { size, theme, modulesCollection } = cms;
+    size && card.setSize(size as CardObject["size"]);
+    theme && card.setTheme(theme as Theme);
+    if (modulesCollection?.items) {
+      const cardModule: (
+        | {
+            func: "addTitle";
+            params: Parameters<Card["addTitle"]>;
+          }
+        | { func: "addDivider"; params: Parameters<Card["addDivider"]> }
+        | { func: "addText"; params: Parameters<Card["addText"]> }
+        | { func: "addModule"; params: Parameters<Card["addModule"]> }
+      )[] = [];
+      const { graph, ..._replaceObject } = role;
+      const replaceObject = {
+        ..._replaceObject,
+        CharacterImageURL: await uploadImage(
+          bot,
+          _replaceObject.CharacterImageURL,
+          _replaceObject.Name
+        ),
+      };
+      modulesCollection?.items.forEach((module, index, array) => {
+        const divider =
+          (module?.divider as "both" | "top" | "bottom" | "none") || "none";
+        if (
+          ["top", "both"].includes(divider) &&
+          cardModule.at(-1)?.func !== "addDivider" &&
+          index !== 0
+        ) {
+          cardModule.push({ func: "addDivider", params: [] });
+        }
+        switch (module?.__typename) {
+          case "HeaderModule": {
+            cardModule.push({
+              func: "addTitle",
+              params: [
+                replaceWithObj(module?.content || "", replaceObject),
+                !!module?.emoji,
+              ],
+            });
+            break;
+          }
+          case "SectionModule": {
+            const image = module.accessory?.imageUrl
+              ? replaceWithObj(module.accessory.imageUrl, replaceObject)
+              : module.accessory?.image?.url;
+
+            const accessory = image
+              ? {
+                  type: "image",
+                  src: image,
+                  size: module.accessory?.size || "lg",
+                }
+              : undefined;
+            switch (module.type) {
+              case "kmarkdown": {
+                cardModule.push({
+                  func: "addText",
+                  params: [
+                    replaceWithObj(module.content || "", replaceObject),
+                    !!module.emoji,
+                    (module?.mode as "right" | "left") || "left",
+                    accessory,
+                  ],
+                });
+                break;
+              }
+              case "paragraph": {
+                const graphItem = graph.shift();
+                const fields = module.paragraphFieldsCollection?.items
+                  ?.filter(typedBoolean)
+                  .map(({ content, type }) => {
+                    return {
+                      type,
+                      content: replaceWithObj(content || "", {
+                        ...replaceObject,
+                        ...(graphItem || {}),
+                      }),
+                    };
+                  });
+                cardModule.push({
+                  func: "addModule",
+                  params: [
+                    {
+                      type: "section",
+                      text: {
+                        type: "paragraph",
+                        cols: fields?.length || 0,
+                        fields: fields,
+                      },
+                    },
+                  ],
+                });
+                break;
+              }
+            }
+            break;
+          }
+        }
+        if (
+          ["bottom", "both"].includes(divider) &&
+          index !== array.length - 1
+        ) {
+          cardModule.push({ func: "addDivider", params: [] });
+        }
+      });
+      cardModule.forEach((module) => {
+        switch (module.func) {
+          case "addDivider":
+            return card.addDivider();
+          case "addText":
+            return card.addText(...module.params);
+          case "addTitle":
+            return card.addTitle(...module.params);
+          case "addModule":
+            return card.addModule(...module.params);
+        }
+      });
     }
     return card;
   },

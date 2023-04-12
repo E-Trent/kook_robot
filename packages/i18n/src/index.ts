@@ -3,7 +3,7 @@ import zh from "./zh";
 import en from "./en";
 import get from "lodash/get";
 import { Lang } from "./type";
-import { NestedKeyOf } from "helper";
+import { NestedKeyOf, replaceWithObj } from "helper";
 
 const envSchema = z.object({
   LANG: z.enum(["zh", "en"]).default("zh"),
@@ -18,7 +18,4 @@ export const $t = (
   key: NestedKeyOf<Lang>,
   replace: Record<string, string> = {}
 ) =>
-  ((get(transitions[env.LANG], key) as string) || key)?.replace(
-    /{{([^}]+)}}/g,
-    (ori, k) => replace[k] || ori
-  );
+  replaceWithObj((get(transitions[env.LANG], key) as string) || key, replace);

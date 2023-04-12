@@ -11,6 +11,10 @@ const en: Lang = {
       notFound: "Not found information about maintenance",
       disabled: "Triggered before",
     },
+    role: {
+      cmd: "role",
+      notFound: "Not found role: {{role}}",
+    },
   },
   base: {
     help: "help",

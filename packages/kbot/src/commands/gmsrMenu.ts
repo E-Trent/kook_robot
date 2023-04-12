@@ -9,7 +9,14 @@ export class GmsrMenu extends AppCommand {
   intro = $t("gmsr.intro");
   hitMap: Record<string, AppFunc> = {
     [$t("gmsr.cmd")]: async (session) =>
-      session.sendCardTemp(await this.api.getCard("gmsr_help_card")),
+      session.sendCardTemp(await this.api.getCard("gmsr-help-card")),
+    [$t("gmsr.role.cmd")]: async (session) => {
+      const role = session.args[1];
+      const card = await this.api.getRole(role);
+      return card
+        ? session.sendCardTemp(card)
+        : session.quoteTemp($t("gmsr.role.notFound", { role }));
+    },
     [$t("gmsr.maintenance.disabled")]: (session) => {
       return session.quoteTemp($t("gmsr.maintenance.disabled"));
     },
@@ -37,6 +44,7 @@ export class GmsrMenu extends AppCommand {
         option: { after: string; page: number },
         fallback: (option: { after: string; page: number }) => Promise<Card>
       ) => Promise<Card>;
+      getRole: (name: string) => Promise<Card | undefined>;
     }
   ) {
     super();
